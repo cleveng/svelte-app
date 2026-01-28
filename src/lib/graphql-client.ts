@@ -4,7 +4,7 @@ import { useStore } from '@tanstack/svelte-store'
 import { appStore } from '$lib/stores/app.store'
 
 const client = new Client({
-  url: 'http://localhost:3000/graphql',
+  url: import.meta.env.VITE_API_URL,
   exchanges: [cacheExchange, fetchExchange],
   requestPolicy: 'cache-and-network',
   fetchOptions: () => {
