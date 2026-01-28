@@ -5,9 +5,7 @@
 scalar Upload
 
 mutation CreateRole($input: RoleInput!) {
-  createRole(
-    input: $input
-  )
+  createRole(input: $input)
 }
 
 mutation UpdateRole($id: Int!, $input: RoleInput!) {
@@ -79,10 +77,7 @@ mutation CreateFileGroup($input: FileGroupInput!) {
 }
 
 mutation UpdateFileGroup($id: Int!, $input: FileGroupInput!) {
-  updateFileGroup(
-    id: $id
-    input: $input
-  )
+  updateFileGroup(id: $id, input: $input)
 }
 
 mutation DeleteFileGroup($id: Int!) {
