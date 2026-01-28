@@ -31,3 +31,30 @@
     proxy_send_timeout 90;
   }
 ```
+
+## 自定义服务
+
+```markdown
+# vim svelte-example.service
+
+[Unit]
+Description=Svelte example
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/directory
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStart=/node /dist/index.js
+Restart=on-failure
+RestartSec=5s
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=svelte-example
+KillMode=mixed
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
