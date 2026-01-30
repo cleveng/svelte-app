@@ -1,11 +1,11 @@
-import { appid } from './src/lib/config'
+import { appid } from './package.json'
 
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   schema: [
     {
-      'http://127.0.0.1:8090/graphql': {
+      'http://127.0.0.1:9001/graphql': {
         headers: {
           Appid: appid,
           Authorization: `Bearer a`,
@@ -33,6 +33,7 @@ const config: CodegenConfig = {
         skipTypename: true, //<https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-operations#skiptypename>
         withHooks: true,
         federation: true,
+        useTypeImports: true, // [verbatimModuleSyntax:true](https://github.com/dotansimha/graphql-code-generator/issues/10028#issuecomment-2206940409)
       },
       hooks: {
         afterOneFileWrite: ['prettier --write'],
