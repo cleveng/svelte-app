@@ -1,7 +1,9 @@
-import { browser } from '$app/environment'
-import { persisted } from 'svelte-persisted-store'
-import type { API } from '$lib/types/api'
 import * as devalue from 'devalue'
+import { persisted } from 'svelte-persisted-store'
+
+import { browser } from '$app/environment'
+
+import type { API } from '$lib/types/api'
 
 export interface AppState {
   theme: 'light' | 'dark' | 'system'

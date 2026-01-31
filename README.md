@@ -58,3 +58,11 @@ TimeoutStopSec=5
 [Install]
 WantedBy=multi-user.target
 ```
+
+## [graffle.js](https://graffle.js.org/guides/getting-started)
+
+## 登录逻辑说明
+
+1. 登录使用action在服务端进行，并存储cookies（用于服务端查询数据）
+2. 登录后跳转到/dashboard，存储数据到sessionStorage，页面请求时使用这个数据
+3. 退出后全局判断是否还存活
