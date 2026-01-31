@@ -9,7 +9,6 @@ export const handle: Handle = sequence(
     console.log(`→ ${event.request.method} ${event.url.pathname}`)
 
     const response = await resolve(event)
-
     console.log(`← ${event.request.method} ${event.url.pathname} ` + `${response.status} in ${Date.now() - start}ms`)
 
     return response
@@ -25,27 +24,29 @@ export const handle: Handle = sequence(
     return response
   },
 
-  // 3. 应用场景： 身份验证
+  // 3. 应用场景：身份验证
   async ({ event, resolve }) => {
-    // 尝试从 cookies 中获取 auth_token 字段值
-    const token = event.cookies.get('auth_token')
+    // 尝试从 cookies 中获取 token 字段值
+    const token = event.cookies.get('token') || event.locals.token
     if (token) {
-      console.log(token, 'hooks.server')
+      console.log('获取到 token: ', token)
     }
 
     // ✅ 受保护路由列表
+    const pathname = event.url.pathname
     const protectedRoutes = ['/dashboard']
-    const isProtected = protectedRoutes.some(path => event.url.pathname.startsWith(path))
+    const isProtected = protectedRoutes.some(path => pathname.startsWith(path))
 
     // ✅ 未登录访问受保护页面 → 跳转
     if (!token && isProtected) {
-      throw redirect(302, `/signin?redirectTo=${event.url.pathname}`)
+      console.log('未登录，跳转到登录页')
+      throw redirect(302, `/signin?redirectTo=${pathname}`)
     }
 
     return resolve(event)
   },
 
-  // 4. Last — actually render the page / call the endpoint
+  // 4. 最后: 实际上要渲染页面/调用端点
   async ({ event, resolve }) => {
     // You can also short-circuit requests here
     // if (event.url.pathname.startsWith('/admin') && !event.locals.user?.role?.includes('admin')) {

@@ -1,5 +1,10 @@
 <script lang="ts">
   import { resolve } from '$app/paths'
+
+  import { Button } from '$lib/components/ui/button/index.js'
+  import * as Field from '$lib/components/ui/field/index.js'
+  import { Input } from '$lib/components/ui/input/index.js'
+  import { Spinner } from '$lib/components/ui/spinner/index.js'
 </script>
 
 <main class="flex h-screen w-full items-center justify-center px-4">
@@ -16,40 +21,37 @@
       </svg>
     </a>
 
-    <h2 class="text-4xl font-medium text-gray-900">注 册</h2>
+    <div>
+      <Field.Group>
+        <Field.Set>
+          <Field.Legend><h2 class="text-4xl font-medium text-gray-900">注 册</h2></Field.Legend>
+          <Field.Description class="mt-4 text-base text-gray-500/90">请输入电子邮件和密码以进行注册。</Field.Description
+          >
+          <Field.Group class="mt-8">
+            <Field.Field>
+              <Field.Label class="text-base" for="email">邮箱</Field.Label>
+              <Input class="h-11" id="email" placeholder="请输入您的电子邮件...." required />
+            </Field.Field>
+            <Field.Field>
+              <Field.Label class="text-base" for="code">密码</Field.Label>
+              <Input class="h-11" id="code" placeholder="请输入您的密码...." required />
+            </Field.Field>
+          </Field.Group>
+        </Field.Set>
 
-    <p class="mt-4 text-base text-gray-500/90">请输入电子邮件和密码以进行注册。</p>
-
-    <div class="mt-10">
-      <label class="font-medium" for="">邮箱</label>
-      <input
-        placeholder="请输入您的电子邮件...."
-        class="mt-2 w-full rounded-md px-3 py-3 ring ring-gray-200 outline-none focus:ring-2 focus:ring-indigo-600"
-        required
-        type="email"
-        name="email"
-      />
+        <Field.Field class="mt-6">
+          <Button
+            class="h-11 w-full bg-indigo-500 text-white transition-opacity hover:bg-indigo-500 hover:opacity-90"
+            size="lg"
+          >
+            <Spinner />注 册
+          </Button>
+        </Field.Field>
+      </Field.Group>
     </div>
 
-    <div class="mt-6">
-      <label class="font-medium" for="">密码</label>
-      <input
-        placeholder="请输入您的密码...."
-        class="mt-2 w-full rounded-md px-3 py-3 ring ring-gray-200 outline-none focus:ring-2 focus:ring-indigo-600"
-        required
-        type="password"
-        name="password"
-      />
-    </div>
-
-    <button
-      type="submit"
-      class="mt-8 w-full cursor-pointer rounded-md bg-indigo-500 py-3 text-white transition hover:opacity-90"
-    >
-      注 册
-    </button>
     <p class="py-8 text-center text-sm text-gray-500/90">
-      已有账号? 前往<a href={resolve('/signin')} class="text-indigo-400 hover:underline">登录</a>
+      已有账号? 前往<a href={resolve('/signin')} class="ml-0.5 text-indigo-400 hover:underline">登录</a>
     </p>
   </form>
 </main>

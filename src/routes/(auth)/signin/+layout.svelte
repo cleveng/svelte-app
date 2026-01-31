@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>登 录</title>
+  <title>登录</title>
 </svelte:head>
 
 {@render children()}
