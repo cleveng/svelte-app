@@ -33,16 +33,16 @@
       </AlertDialogDescription>
     </AlertDialogHeader>
 
-    <form method="POST" action="/logout">
-      <AlertDialogFooter>
-        <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">取消</AlertDialogCancel>
+    <AlertDialogFooter>
+      <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">取消</AlertDialogCancel>
+      <form method="POST" action="/logout">
         <Button onclick={handleConfirm} disabled={disabled || loading} type="submit">
           {#if loading}
             <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
           {/if}
           确认
         </Button>
-      </AlertDialogFooter>
-    </form>
+      </form>
+    </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
