@@ -12,7 +12,8 @@ const graffle = Graffle.create()
     url: import.meta.env.VITE_API_URL,
     raw: { mode: 'cors' },
     headers: {
-      Appid: import.meta.env.VITE_APPID, // 1.0 设置 appid
+      Appid: __APPID__, // 1.0 设置 appid
+      AppVersion: __VERSION__, // 1.0 设置 appVersion
       // 在这里是无法设置动态的 Authorization
     },
   })
