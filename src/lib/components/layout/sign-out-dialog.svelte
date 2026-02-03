@@ -18,7 +18,10 @@
   let { open, onOpenChange } = $props()
 
   const handleConfirm = () => {
-    toast.success('退出成功，正在跳转...')
+    toast.success('退出成功，正在跳转...', {
+      id: __TOAST_ID__,
+      duration: 2500,
+    })
   }
 </script>
 

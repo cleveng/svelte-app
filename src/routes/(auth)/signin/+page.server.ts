@@ -62,7 +62,7 @@ export const actions: Actions = {
       cookies.set('loggedIn', 'true', { path: '/', httpOnly: false })
 
       // throw redirect(303, redirectTo)
-      return { success: true, redirectTo }
+      return { success: true, redirectTo, form }
     } catch (err: any) {
       // Redirect { status: 303, location: '/dashboard' }
       if (isRedirect(err)) throw err

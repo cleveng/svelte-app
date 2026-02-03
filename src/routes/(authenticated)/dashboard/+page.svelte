@@ -1,9 +1,16 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import { toast } from 'svelte-sonner'
+
   import { resolve } from '$app/paths'
 
   import { Main } from '$lib/components/layout'
   import { Button } from '$lib/components/ui/button/index.js'
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '$lib/components/ui/tabs'
+
+  onMount(() => {
+    toast.dismiss(__TOAST_ID__)
+  })
 </script>
 
 <Main>

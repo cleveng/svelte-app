@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
     define: {
       __APPID__: JSON.stringify(pkg.appid),
       __VERSION__: JSON.stringify(pkg.version),
+      __TOAST_ID__: JSON.stringify('global-toast')
     },
     plugins: [tailwindcss(), enhancedImages(), sveltekit()],
     esbuild: {

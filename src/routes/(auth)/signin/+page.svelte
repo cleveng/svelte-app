@@ -33,12 +33,16 @@
 
       // ✅ 登录失败（fail(...)）
       if (result.type === 'failure') {
-        toast.error(result.data?.error ?? '登录失败')
+        toast.error(result.data?.error ?? '登录失败', {
+          id: __TOAST_ID__,
+        })
       }
 
       // ✅ 登录成功（redirect 会发生）
       if (result.type === 'success' && result.data?.success) {
-        toast.success('登录成功，正在跳转...')
+        toast.success('登录成功，正在跳转...', {
+          id: __TOAST_ID__,
+        })
         await goto(resolve(result?.data?.redirectTo), { replaceState: true })
       }
     },
