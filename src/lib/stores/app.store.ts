@@ -11,6 +11,7 @@ export interface AppState {
   token: string | null
   profile: API.Profile | null
   lng: string
+  toDestroy: () => void
 }
 
 const initialState: AppState = {
@@ -19,6 +20,11 @@ const initialState: AppState = {
   token: null,
   profile: null,
   lng: 'en',
+  toDestroy: () => {
+    if (browser) {
+      sessionStorage.clear()
+    }
+  },
 }
 
 export const appStore = persisted('session-storage', initialState, {
@@ -30,8 +36,4 @@ if (browser) {
   appStore.subscribe(state => {
     document.documentElement.classList.toggle('dark', state.theme === 'dark')
   })
-}
-
-export function setTheme(theme: AppState['theme']) {
-  appStore.update(prev => ({ ...prev, theme }))
 }

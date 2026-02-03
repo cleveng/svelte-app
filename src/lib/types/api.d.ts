@@ -1,10 +1,10 @@
 export declare namespace API {
   export interface Profile {
-    id?: number
+    id: number
     email: string
     username: string
     profile_url: string
-    email_verified_at?: string
+    email_verified_at?: string | null | undefined
     status: string
   }
 

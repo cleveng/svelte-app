@@ -2,6 +2,11 @@
 import { redirect, type Handle } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks'
 
+import graffle from '$lib/graphql-client'
+import type { API } from '$lib/types/api'
+
+import { ProfileDocument } from '@/generated/graphql'
+
 export const handle: Handle = sequence(
   // 1. 打印请求时长
   async ({ event, resolve }) => {
@@ -26,11 +31,7 @@ export const handle: Handle = sequence(
 
   // 3. 应用场景：身份验证
   async ({ event, resolve }) => {
-    // 尝试从 cookies 中获取 token 字段值
     const token = event.cookies.get('token') || event.locals.token
-    if (token) {
-      console.log('获取到 token: ', token)
-    }
 
     // ✅ 受保护路由列表
     const pathname = event.url.pathname
@@ -41,6 +42,19 @@ export const handle: Handle = sequence(
     if (!token && isProtected) {
       console.log('未登录，跳转到登录页')
       throw redirect(302, `/signin?redirectTo=${pathname}`)
+    }
+
+    // ── 根据 token 获取 profile ──
+    if (token) {
+      try {
+        const data = await graffle.gql(ProfileDocument).$send()
+        if (data?.profile) {
+          console.log('获取用户信息成功', new Date())
+          event.locals.profile = data.profile as unknown as API.Profile
+        }
+      } catch (error) {
+        console.error(error, '获取用户信息失败')
+      }
     }
 
     return resolve(event)

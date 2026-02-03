@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte'
 
+  import { browser } from '$app/environment'
+
   import { Separator } from '$lib/components/ui/separator'
   import { SidebarTrigger } from '$lib/components/ui/sidebar'
 
@@ -12,15 +14,20 @@
   let offset = 0
 
   const onScroll = () => {
+    if (!browser) return
     offset = document.body.scrollTop || document.documentElement.scrollTop
   }
 
   onMount(() => {
-    document.addEventListener('scroll', onScroll, { passive: true })
+    if (browser) {
+      document.addEventListener('scroll', onScroll, { passive: true })
+    }
   })
 
   onDestroy(() => {
-    document.removeEventListener('scroll', onScroll)
+    if (browser) {
+      document.removeEventListener('scroll', onScroll)
+    }
   })
 </script>
 

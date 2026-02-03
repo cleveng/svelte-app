@@ -1,10 +1,17 @@
 <script lang="ts">
+  import AppTitle from './app-title.svelte'
+  import NavUser from './nav-user.svelte'
+
   import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 </script>
 
 <Sidebar>
-  <SidebarHeader></SidebarHeader>
+  <SidebarHeader>
+    <AppTitle />
+  </SidebarHeader>
   <SidebarContent></SidebarContent>
-  <SidebarFooter></SidebarFooter>
+  <SidebarFooter>
+    <NavUser />
+  </SidebarFooter>
   <SidebarRail />
 </Sidebar>

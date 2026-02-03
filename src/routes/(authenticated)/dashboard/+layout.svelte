@@ -1,12 +1,14 @@
 <script lang="ts">
-  import { browser } from '$app/environment'
-  import { resolve } from '$app/paths'
   import { page } from '$app/state'
 
-  import { Header, ProfileDropdown, ThemeSwitch, TopNav, Search } from '$lib/components/layout'
-  import { Button } from '$lib/components/ui/button/index.js'
+  import { AppSidebar, Header, ProfileDropdown, ThemeSwitch, TopNav, Search } from '$lib/components/layout'
+  import SkipToMain from '$lib/components/skip-to-main.svelte'
+  import { SidebarInset, SidebarProvider } from '$lib/components/ui/sidebar'
 
+  import LayoutProvider from '$lib/context/layout-provider.svelte'
+  import SearchProvider from '$lib/context/search-provider.svelte'
   import { appStore } from '$lib/stores/app.store'
+  import { cn } from '$lib/utils'
 
   let { children } = $props()
 
@@ -45,39 +47,44 @@
       disabled: false,
     },
   ]
+
+  // sidebarState
+  const sidebarState = $derived(page.data?.sidebarState)
 </script>
 
 <svelte:head>
   <title>管理系统</title>
 </svelte:head>
-{#if browser}
-  <Header>
-    <TopNav links={topNav} />
-    <div class="ms-auto flex items-center space-x-4">
-      <Search />
-      <ThemeSwitch />
-      <ProfileDropdown />
-    </div>
-  </Header>
-{/if}
-<div class="mx-auto max-w-3xl">
-  <div class="grid grid-cols-5 gap-4">
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/accounts')}> accounts </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/menus')}> menus </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/permissions')}> permissions </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/roles')}> roles </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/articles')}> articles </a>
-    </Button>
-  </div>
-</div>
 
-{@render children()}
+<SearchProvider>
+  <LayoutProvider>
+    <SidebarProvider open={sidebarState}>
+      <SkipToMain />
+      <AppSidebar />
+      <SidebarInset
+        class={cn(
+          // Set content container, so we can use container queries
+          '@container/content',
+
+          // If layout is fixed, set the height
+          // to 100svh to prevent overflow
+          'has-[[data-layout=fixed]]:h-svh',
+
+          // If layout is fixed and sidebar is inset,
+          // set the height to 100svh - spacing (total margins) to prevent overflow
+          'peer-data-[variant=inset]:has-[[data-layout=fixed]]:h-[calc(100svh-(var(--spacing)*4))]'
+        )}
+      >
+        <Header>
+          <TopNav links={topNav} />
+          <div class="ms-auto flex items-center space-x-4">
+            <Search />
+            <ThemeSwitch />
+            <ProfileDropdown />
+          </div>
+        </Header>
+        {@render children()}
+      </SidebarInset>
+    </SidebarProvider>
+  </LayoutProvider>
+</SearchProvider>

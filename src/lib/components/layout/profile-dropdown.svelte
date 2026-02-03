@@ -1,5 +1,6 @@
 <script lang="ts">
   import { resolve } from '$app/paths'
+  import { page } from '$app/state'
 
   import SignOutDialog from '$lib/components/layout/sign-out-dialog.svelte'
   import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar'
@@ -15,9 +16,7 @@
     DropdownMenuTrigger,
   } from '$lib/components/ui/dropdown-menu'
 
-  import { appStore } from '$lib/stores/app.store'
-
-  let profile = $derived($appStore.profile)
+  const profile = page.data?.profile
 
   let open = $state<boolean>(false)
 </script>
