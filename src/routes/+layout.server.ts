@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit'
 
 import graffle from '$lib/graphql-client'
 
+import { SIDEBAR_COOKIE_NAME } from '@/components/ui/sidebar/constants'
 import { AuthDocument } from '@/generated/graphql'
 
 /**
@@ -42,9 +43,13 @@ export async function load({ locals, cookies, request }) {
     }
   }
 
+  // SIDEBAR_COOKIE_NAME
+  const sidebarState = cookies.get(SIDEBAR_COOKIE_NAME) !== 'false'
+
   // 非根页面时，返回空对象即可（不影响其他路由）
   return {
     loggedIn: true,
     token: token,
+    sidebarState: !!sidebarState,
   }
 }

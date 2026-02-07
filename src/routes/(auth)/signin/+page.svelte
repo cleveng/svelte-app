@@ -6,6 +6,7 @@
   import { superForm } from 'sveltekit-superforms'
   import { zod4 } from 'sveltekit-superforms/adapters'
 
+  import { goto } from '$app/navigation'
   import { resolve } from '$app/paths'
 
   import { Button } from '$lib/components/ui/button/index.js'
@@ -14,6 +15,9 @@
   import * as InputGroup from '$lib/components/ui/input-group/index.js'
   import { Label } from '$lib/components/ui/label/index.js'
   import { Spinner } from '$lib/components/ui/spinner/index.js'
+
+  import GoogleLogo from '$lib/assets/images/google.svg'
+  import leftSideImage from '$lib/assets/images/leftSideImage.png'
 
   import { formSchema } from './schema'
 
@@ -27,17 +31,22 @@
     onSubmit: () => {
       loading = true
     },
-    onResult: ({ result }) => {
+    onResult: async ({ result }) => {
       loading = false
 
       // ✅ 登录失败（fail(...)）
       if (result.type === 'failure') {
-        toast.error(result.data?.error ?? '登录失败')
+        toast.error(result.data?.error ?? '登录失败', {
+          id: __TOAST_ID__,
+        })
       }
 
       // ✅ 登录成功（redirect 会发生）
-      if (result.type === 'success') {
-        toast.success('登录成功，正在跳转...')
+      if (result.type === 'success' && result.data?.success) {
+        toast.success('登录成功，正在跳转...', {
+          id: __TOAST_ID__,
+        })
+        await goto(resolve(result?.data?.redirectTo), { replaceState: true })
       }
     },
   })
@@ -47,11 +56,7 @@
 
 <div class="flex h-screen w-full">
   <div class="hidden w-full md:inline-block">
-    <img
-      class="h-full"
-      src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/leftSideImage.png"
-      alt="leftSideImage"
-    />
+    <img class="h-full" src={leftSideImage} alt="leftSideImage" />
   </div>
 
   <div class="flex w-full flex-col items-center justify-center">
@@ -59,11 +64,8 @@
       <h2 class="text-4xl font-medium text-gray-900">登 录</h2>
       <p class="mt-3 text-sm text-gray-500/90">欢迎回来！请登录以继续使用。</p>
 
-      <Button class="mt-8 h-11 w-full " size="lg" variant="secondary">
-        <img
-          src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg"
-          alt="googleLogo"
-        />
+      <Button class="mt-8 h-11 w-full" size="lg" variant="secondary">
+        <img src={GoogleLogo} alt="googleLogo" />
       </Button>
 
       <div class="my-5 flex w-full items-center gap-4">

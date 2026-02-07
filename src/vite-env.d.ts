@@ -2,3 +2,4 @@
 
 declare const __APPID__: string
 declare const __VERSION__: string
+declare const __TOAST_ID__: string

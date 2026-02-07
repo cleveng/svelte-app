@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { resolve } from '$app/paths'
   import { page } from '$app/state'
 
-  import { Button } from '$lib/components/ui/button/index.js'
+  import { ConfigDrawer } from '$lib/components/config-drawer'
+  import { AuthenticatedLayout, Header, ProfileDropdown, ThemeSwitch, TopNav, Search } from '$lib/components/layout'
 
   import { appStore } from '$lib/stores/app.store'
 
@@ -16,33 +16,48 @@
       token: page.data?.token,
     }))
   }
+
+  const topNav = [
+    {
+      title: 'Overview',
+      href: '/dashboard/overview',
+      isActive: true,
+      disabled: false,
+    },
+    {
+      title: 'Customers',
+      href: '/dashboard/customers',
+      isActive: false,
+      disabled: false,
+    },
+    {
+      title: 'Products',
+      href: '/dashboard/products',
+      isActive: false,
+      disabled: false,
+    },
+    {
+      title: 'Settings',
+      href: '/dashboard/settings',
+      isActive: false,
+      disabled: false,
+    },
+  ]
 </script>
 
 <svelte:head>
   <title>管理系统</title>
 </svelte:head>
 
-<div class="mx-auto max-w-3xl">
-  <form method="POST" action="/logout">
-    <button>退出</button>
-  </form>
-  <div class="grid grid-cols-5 gap-4">
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/accounts')}> accounts </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/menus')}> menus </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/permissions')}> permissions </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/roles')}> roles </a>
-    </Button>
-    <Button variant="link" class="text-muted-foreground" size="sm">
-      <a href={resolve('/dashboard/articles')}> articles </a>
-    </Button>
-  </div>
-</div>
-
-{@render children()}
+<AuthenticatedLayout>
+  <Header>
+    <TopNav links={topNav} />
+    <div class="ms-auto flex items-center space-x-4">
+      <Search />
+      <ThemeSwitch />
+      <ProfileDropdown />
+      <ConfigDrawer />
+    </div>
+  </Header>
+  {@render children()}
+</AuthenticatedLayout>
