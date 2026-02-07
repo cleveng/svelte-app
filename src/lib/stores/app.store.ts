@@ -11,10 +11,16 @@ export interface AppState {
   token: string | null
   profile: API.Profile | null
   lng: string
+  dir: API.Direction
+  layout: API.Collapsible
+  sidebar: API.Variant
 }
 
 const initialState: AppState = {
   theme: browser ? (sessionStorage.theme as AppState['theme']) || 'system' : 'system',
+  dir: browser ? (sessionStorage.dir as AppState['dir']) || 'ltr' : 'ltr',
+  layout: browser ? (sessionStorage.layout as AppState['layout']) || 'default' : 'default',
+  sidebar: browser ? (sessionStorage.collapsible as AppState['sidebar']) || 'inset' : 'inset',
   loggedIn: false,
   token: null,
   profile: null,
@@ -28,7 +34,10 @@ export const appStore = persisted('session-storage', initialState, {
 
 if (browser) {
   appStore.subscribe(state => {
+    // 切换主题
     document.documentElement.classList.toggle('dark', state.theme === 'dark')
+    // 切换方向
+    document.documentElement.setAttribute('dir', state.dir)
   })
 }
 

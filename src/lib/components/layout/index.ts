@@ -1,9 +1,10 @@
-import AppSidebar from './app-sidebar.svelte'
+import AuthenticatedLayout from './authenticated-layout.svelte'
 import Header from './header.svelte'
 import Main from './main.svelte'
 import ProfileDropdown from './profile-dropdown.svelte'
 import Search from './search.svelte'
+import SkipToMain from './skip-to-main.svelte'
 import ThemeSwitch from './theme-switch.svelte'
 import TopNav from './top-nav.svelte'
 
-export { AppSidebar, Header, Main, ProfileDropdown, Search, ThemeSwitch, TopNav }
+export { AuthenticatedLayout, Header, Main, ProfileDropdown, Search, SkipToMain, ThemeSwitch, TopNav }

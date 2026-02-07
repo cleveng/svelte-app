@@ -5,8 +5,14 @@
 
   import { cn } from '$lib/utils'
 
-  export let className = ''
-  export let placeholder = 'Search'
+  let {
+    placeholder = 'Search',
+    className,
+    ...props
+  } = $props<{
+    placeholder?: string
+    className?: string
+  }>()
 </script>
 
 <Button
@@ -16,6 +22,7 @@
     className
   )}
   onclick={() => {}}
+  {...props}
 >
   <Search aria-hidden="true" class="absolute start-1.5 top-1/2 -translate-y-1/2" size={16} />
   <span class="ms-4">{placeholder}</span>

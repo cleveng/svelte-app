@@ -39,7 +39,12 @@
     <AlertDialogFooter>
       <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">取消</AlertDialogCancel>
       <form method="POST" action="/logout">
-        <Button onclick={handleConfirm} disabled={disabled || loading} type="submit">
+        <Button
+          onclick={handleConfirm}
+          disabled={disabled || loading}
+          type="submit"
+          class="w-full md:inline-block md:w-auto"
+        >
           {#if loading}
             <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
           {/if}
