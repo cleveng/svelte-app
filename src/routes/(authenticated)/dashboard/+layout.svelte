@@ -2,7 +2,15 @@
   import { page } from '$app/state'
 
   import { ConfigDrawer } from '$lib/components/config-drawer'
-  import { AuthenticatedLayout, Header, ProfileDropdown, ThemeSwitch, TopNav, Search } from '$lib/components/layout'
+  import {
+    AuthenticatedLayout,
+    LocaleSwitch,
+    Header,
+    ProfileDropdown,
+    ThemeSwitch,
+    TopNav,
+    Search,
+  } from '$lib/components/layout'
 
   import { appStore } from '$lib/stores/app.store'
 
@@ -54,6 +62,7 @@
     <TopNav links={topNav} />
     <div class="ms-auto flex items-center space-x-4">
       <Search />
+      <LocaleSwitch />
       <ThemeSwitch />
       <ProfileDropdown />
       <ConfigDrawer />

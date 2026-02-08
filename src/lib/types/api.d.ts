@@ -11,10 +11,10 @@ export declare namespace API {
   }
 
   type Theme = 'light' | 'dark' | 'system'
-
   type Direction = 'ltr' | 'rtl'
   type Collapsible = 'offcanvas' | 'icon' | 'default'
   type Variant = 'inset' | 'sidebar' | 'floating'
+  type Locale = 'en-US' | 'zh-CN'
 
   export interface Menu {
     id: number

@@ -2,6 +2,7 @@
   import Eye from '@lucide/svelte/icons/eye'
   import Lock from '@lucide/svelte/icons/lock'
   import MailIcon from '@lucide/svelte/icons/mail'
+  import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
   import { superForm } from 'sveltekit-superforms'
   import { zod4 } from 'sveltekit-superforms/adapters'
@@ -36,7 +37,7 @@
 
       // ✅ 登录失败（fail(...)）
       if (result.type === 'failure') {
-        toast.error(result.data?.error ?? '登录失败', {
+        toast.error(result.data?.error ?? '登录失败，请检查表单', {
           id: __TOAST_ID__,
         })
       }
@@ -135,7 +136,7 @@
           {#if loading}
             <Spinner />
           {/if}
-          登 录
+          {$_('button.signin')}
         </Form.Button>
       </form>
 

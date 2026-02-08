@@ -1,4 +1,5 @@
 // src/hooks.server.ts
+import '$lib/i18n'
 import { redirect, type Handle } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks'
 

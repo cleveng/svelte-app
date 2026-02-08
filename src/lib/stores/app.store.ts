@@ -10,10 +10,10 @@ export interface AppState {
   loggedIn: boolean
   token: string | null
   profile: API.Profile | null
-  lng: string
   dir: API.Direction
   layout: API.Collapsible
   sidebar: API.Variant
+  locale: API.Locale
 }
 
 const initialState: AppState = {
@@ -24,7 +24,7 @@ const initialState: AppState = {
   loggedIn: false,
   token: null,
   profile: null,
-  lng: 'en',
+  locale: 'en-US',
 }
 
 export const appStore = persisted('session-storage', initialState, {
@@ -38,6 +38,8 @@ if (browser) {
     document.documentElement.classList.toggle('dark', state.theme === 'dark')
     // 切换方向
     document.documentElement.setAttribute('dir', state.dir)
+    // 切换语言
+    document.documentElement.setAttribute('lang', state.locale)
   })
 }
 

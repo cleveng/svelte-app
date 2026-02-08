@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
 
   import { resolve } from '$app/paths'
@@ -25,7 +26,7 @@
     <div class="mb-2 flex items-center justify-between space-y-2">
       <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
       <div class="flex items-center space-x-2">
-        <Button>Download</Button>
+        <Button>{$_('button.download')}</Button>
       </div>
     </div>
     <Tabs orientation="vertical" value="overview" class="space-y-4">
