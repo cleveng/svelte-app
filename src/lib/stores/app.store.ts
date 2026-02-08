@@ -11,7 +11,7 @@ export interface AppState {
   token: string | null
   profile: API.Profile | null
   dir: API.Direction
-  layout: API.Collapsible
+  collapsible: API.Collapsible
   sidebar: API.Variant
   locale: API.Locale
 }
@@ -19,7 +19,7 @@ export interface AppState {
 const initialState: AppState = {
   theme: browser ? (sessionStorage.theme as AppState['theme']) || 'system' : 'system',
   dir: browser ? (sessionStorage.dir as AppState['dir']) || 'ltr' : 'ltr',
-  layout: browser ? (sessionStorage.layout as AppState['layout']) || 'default' : 'default',
+  collapsible: browser ? (sessionStorage.collapsible as AppState['collapsible']) || 'icon' : 'icon',
   sidebar: browser ? (sessionStorage.collapsible as AppState['sidebar']) || 'inset' : 'inset',
   loggedIn: false,
   token: null,

@@ -6,6 +6,8 @@
   import { NavGroup } from '$lib/components/config-drawer'
   import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '$lib/components/ui/sidebar'
 
+  import { appStore } from '$lib/stores/app.store'
+
   import NavUser from './nav-user.svelte'
   import TeamSwitcher from './team-switcher.svelte'
 
@@ -26,9 +28,12 @@
       plan: 'Startup',
     },
   ])
+
+  let collapsible = $derived($appStore.collapsible)
+  let sidebar = $derived($appStore.sidebar)
 </script>
 
-<Sidebar>
+<Sidebar {collapsible} variant={sidebar}>
   <SidebarHeader>
     <TeamSwitcher {teams} />
   </SidebarHeader>

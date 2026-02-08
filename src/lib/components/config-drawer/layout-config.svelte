@@ -29,21 +29,22 @@
     },
   ])
 
-  let layout = $derived($appStore.layout)
+  let collapsible = $derived($appStore.collapsible)
 
   const changeLayout = (value: API.Collapsible) => {
-    appStore.update(state => ({ ...state, layout: value }))
+    if (value === 'default') return
+    appStore.update(state => ({ ...state, collapsible: value }))
   }
 
   $effect(() => {
-    changeLayout(layout)
+    changeLayout(collapsible)
   })
 </script>
 
 <div>
-  <SectionTitle title="Layout" showReset={layout !== 'default'} onReset={() => changeLayout('default')} />
+  <SectionTitle title="Layout" showReset={collapsible !== 'icon'} onReset={() => changeLayout('icon')} />
   <RadioGroup.Root
-    bind:value={layout}
+    bind:value={collapsible}
     class="grid w-full max-w-md grid-cols-3 gap-4"
     aria-label="Select layout style"
     aria-describedby="layout-description"

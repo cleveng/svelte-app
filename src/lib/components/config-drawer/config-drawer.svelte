@@ -12,10 +12,16 @@
     SheetTrigger,
   } from '$lib/components/ui/sheet'
 
+  import { appStore } from '$lib/stores/app.store'
+
   import DirConfig from './dir-config.svelte'
   import LayoutConfig from './layout-config.svelte'
   import SidebarConfig from './sidebar-config.svelte'
   import ThemeConfig from './theme-config.svelte'
+
+  const handleReset = () => {
+    appStore.update(state => ({ ...state, collapsible: 'icon', dir: 'ltr', sidebar: 'sidebar', theme: 'system' }))
+  }
 </script>
 
 <Sheet>
@@ -44,7 +50,7 @@
       <DirConfig />
     </div>
     <SheetFooter class="gap-2">
-      <Button aria-label="Reset all settings to default values">Save changes</Button>
+      <Button aria-label="Reset all settings to default values" onclick={handleReset}>Reset</Button>
     </SheetFooter>
   </SheetContent>
 </Sheet>
