@@ -2,6 +2,12 @@
   "button": {
     "submit": "Submit",
     "signin": "Sign In",
-    "download": "Download"
+    "download": "Download",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "signOut": {
+    "title": "Confirm Sign Out",
+    "description": "Are you sure you want to sign out of your account? You will be redirected to the login page."
   }
 }

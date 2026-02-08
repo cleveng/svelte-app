@@ -2,6 +2,12 @@
   "button": {
     "submit": "提交",
     "signin": "登录",
-    "download": "下载"
+    "download": "下载",
+    "confirm": "确认",
+    "cancel": "取消"
+  },
+  "signOut": {
+    "title": "确认退出",
+    "description": "是否确认退出当前账号？退出后将返回登录页面哦？"
   }
 }

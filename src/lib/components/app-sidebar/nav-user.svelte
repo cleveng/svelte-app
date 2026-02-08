@@ -59,7 +59,7 @@
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        class="w-[var(--radix-dropdown-menu-trigger-width)] min-w-56 rounded-lg"
+        class="w-var(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
         side={isMobile ? 'bottom' : 'right'}
         align="end"
         sideOffset={4}
@@ -112,7 +112,7 @@
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onclick={() => (open = true)}>
+        <DropdownMenuItem variant="destructive" onclick={() => (open = true)}>
           <LogOut />
           退出登录
         </DropdownMenuItem>

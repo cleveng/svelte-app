@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
 
   import {
@@ -28,27 +29,30 @@
 <AlertDialog bind:open>
   <AlertDialogContent>
     <AlertDialogHeader class="text-start">
-      <AlertDialogTitle>是否退出登录</AlertDialogTitle>
+      <AlertDialogTitle>{$_('signOut.title')}</AlertDialogTitle>
       <AlertDialogDescription>
         {#snippet child({ props })}
-          <div {...props}>确定要退出登录吗?</div>
+          <div {...props}>{$_('signOut.description')}</div>
         {/snippet}
       </AlertDialogDescription>
     </AlertDialogHeader>
 
     <AlertDialogFooter>
-      <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">取消</AlertDialogCancel>
+      <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">
+        {$_('button.cancel')}
+      </AlertDialogCancel>
       <form method="POST" action="/logout">
         <Button
           onclick={handleConfirm}
           disabled={disabled || loading}
+          variant="destructive"
           type="submit"
           class="w-full md:inline-block md:w-auto"
         >
           {#if loading}
             <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
           {/if}
-          确认
+          {$_('button.confirm')}
         </Button>
       </form>
     </AlertDialogFooter>

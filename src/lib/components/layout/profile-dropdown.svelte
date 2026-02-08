@@ -78,9 +78,9 @@
 
     <DropdownMenuSeparator />
 
-    <DropdownMenuItem class="cursor-pointer" onclick={() => (open = true)}>
+    <DropdownMenuItem variant="destructive" class="cursor-pointer" onclick={() => (open = true)}>
       Sign Out
-      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+      <DropdownMenuShortcut class="text-current">⇧⌘Q</DropdownMenuShortcut>
     </DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
