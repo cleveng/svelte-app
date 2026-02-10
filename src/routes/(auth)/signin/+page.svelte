@@ -62,10 +62,10 @@
 
   <div class="flex w-full flex-col items-center justify-center">
     <div class="flex w-80 flex-col items-center justify-center md:w-96">
-      <h2 class="text-4xl font-medium text-gray-900">登 录</h2>
+      <h2 class="text-4xl font-medium text-gray-900 dark:text-white/60">登 录</h2>
       <p class="mt-3 text-sm text-gray-500/90">欢迎回来！请登录以继续使用。</p>
 
-      <Button class="mt-8 h-11 w-full" size="lg" variant="secondary">
+      <Button class="mt-8 h-11 w-full" size="lg" variant="secondary" disabled>
         <img src={GoogleLogo} alt="googleLogo" />
       </Button>
 

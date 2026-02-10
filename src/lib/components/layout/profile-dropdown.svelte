@@ -53,21 +53,21 @@
 
     <DropdownMenuGroup>
       <DropdownMenuItem>
-        <a href={resolve('/')} class="flex items-center justify-between" data-sveltekit-preload-data="hover">
+        <a href={resolve('/')} class="flex w-full items-center justify-between" data-sveltekit-preload-data="hover">
           Profile
           <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
         </a>
       </DropdownMenuItem>
 
       <DropdownMenuItem>
-        <a href={resolve('/')} class="flex items-center justify-between" data-sveltekit-preload-data="hover">
+        <a href={resolve('/')} class="flex w-full items-center justify-between" data-sveltekit-preload-data="hover">
           Billing
           <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
         </a>
       </DropdownMenuItem>
 
       <DropdownMenuItem>
-        <a href={resolve('/')} class="flex items-center justify-between" data-sveltekit-preload-data="hover">
+        <a href={resolve('/')} class="flex w-full items-center justify-between" data-sveltekit-preload-data="hover">
           Settings
           <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
         </a>
