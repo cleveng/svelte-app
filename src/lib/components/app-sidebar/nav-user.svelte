@@ -6,6 +6,7 @@
   import LogOut from '@lucide/svelte/icons/log-out'
   import Sparkles from '@lucide/svelte/icons/sparkles'
 
+  import { resolve } from '$app/paths'
   import { page } from '$app/state'
 
   import SignOutDialog from '$lib/components/layout/sign-out-dialog.svelte'
@@ -20,6 +21,8 @@
     DropdownMenuTrigger,
   } from '$lib/components/ui/dropdown-menu'
   import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '$lib/components/ui/sidebar'
+
+  import { cn } from '$lib/utils'
 
   const { isMobile } = useSidebar()
 
@@ -95,8 +98,10 @@
 
         <DropdownMenuGroup>
           <DropdownMenuItem onclick={() => {}}>
-            <BadgeCheck />
-            Account
+            <a href={resolve('/dashboard/profile')} class={cn('flex items-center justify-start gap-2')}>
+              <BadgeCheck />
+              Profile
+            </a>
           </DropdownMenuItem>
 
           <DropdownMenuItem onclick={() => {}}>

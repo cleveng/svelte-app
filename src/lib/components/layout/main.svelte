@@ -1,9 +1,7 @@
 <script lang="ts">
   import { cn } from '$lib/utils'
 
-  export let fixed = false
-  export let fluid = false
-  export let className = ''
+  const { fixed, fluid, className, children, ...props } = $props()
 </script>
 
 <main
@@ -14,7 +12,7 @@
     !fluid && '@7xl/content:mx-auto @7xl/content:w-full @7xl/content:max-w-7xl',
     className
   )}
-  {...$$restProps}
+  {...props}
 >
-  <slot />
+  {@render children()}
 </main>
