@@ -1,5 +1,6 @@
 import { Graffle } from 'graffle'
 import { DocumentBuilder } from 'graffle/extensions/document-builder'
+import { Upload } from 'graffle/extensions/upload'
 import { get } from 'svelte/store'
 
 import { browser } from '$app/environment'
@@ -11,15 +12,12 @@ const graffle = Graffle.create()
   .transport({
     url: import.meta.env.VITE_API_URL,
     raw: { mode: 'cors' },
-    headers: {
-      Appid: __APPID__, // 1.0 设置 appid
-      AppVersion: __VERSION__, // 1.0 设置 appVersion
-      // 在这里是无法设置动态的 Authorization
-    },
   })
   .anyware(({ exchange }) => {
     // [dynamic-headers](https://graffle.js.org/examples/transport-http/dynamic-headers#dynamic-headers)
     const headers: Headers = new Headers(exchange.input.request.headers)
+    headers.set('Appid', __APPID__)
+    headers.set('AppVersion', __VERSION__)
     headers.set('X-Sent-At-Time', Date.now().toString())
 
     let token: string | null = null
@@ -49,6 +47,7 @@ const graffle = Graffle.create()
     console.log(exchange.input.request)
     return exchange()
   })
+  .use(Upload)
   .use(DocumentBuilder())
 
 export default graffle

@@ -24,43 +24,29 @@ export const actions: Actions = {
     }
 
     try {
-      const files = form.data.file as unknown as File[]
-      if (!files || files.length === 0) {
-        return fail(400, { form: {
-          ...form,
-          data: {
-            ...form.data,
-            file: undefined, // 或者返回 file.name 等信息
-          },
-        }, error: '请选择文件' })
+      const file = form.data.file as File
+      if (!file) {
+        return fail(400, { form })
       }
-
-      const file = files[0]
-
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', file.name, file.size, file.type)
 
       const data = await graffle.gql(UploadFileDocument).$send({
         file,
       })
 
-      console.log(data, 'data')
+      // 上传完成后
+      form.data.file = undefined as any
 
-      // ✅ 返回可序列化信息，不返回 File 对象
       return {
-        form: {
-          ...form,
-          data: {
-            ...form.data,
-            file: undefined, // 或者返回 file.name 等信息
-          },
-        },
+        form,
         success: `文件上传成功: ${file.name}`,
+        data: data?.uploadFile,
       }
     } catch (err: any) {
-      // Redirect { status: 303, location: '/dashboard' }
       if (isRedirect(err)) throw err
 
       const message = err?.errors?.[0]?.message || err?.cause?.message || err?.message || '未知错误'
+
+      form.data.file = undefined as any
 
       return fail(500, {
         form,
