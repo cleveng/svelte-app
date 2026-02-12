@@ -3,11 +3,11 @@
   import Command from '@lucide/svelte/icons/command'
   import GalleryVerticalEnd from '@lucide/svelte/icons/gallery-vertical-end'
 
-  import { NavGroup } from '$lib/components/config-drawer'
   import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '$lib/components/ui/sidebar'
 
   import { appStore } from '$lib/stores/app.store'
 
+  import NavGroup from './nav-group.svelte'
   import NavUser from './nav-user.svelte'
   import TeamSwitcher from './team-switcher.svelte'
 
