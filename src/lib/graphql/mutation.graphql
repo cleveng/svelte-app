@@ -1,9 +1,3 @@
-# https://www.apollographql.com/docs/apollo-server/v3/data/file-uploads
-# type FileInput {
-#   file: Upload!
-# }
-scalar Upload
-
 mutation Signin($input: String!) {
   signin(input: $input)
 }
@@ -14,4 +8,18 @@ mutation Login($input: String!) {
 
 mutation Logout($input: String!) {
   logout(input: $input)
+}
+
+mutation UploadFile($file: Upload!) {
+  uploadFile(file: $file) {
+    id
+    file_url
+    user_id
+    file_name
+    file_size
+    file_type
+    file_extension
+    group_id
+    is_referenced
+  }
 }

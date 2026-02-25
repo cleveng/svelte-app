@@ -98,6 +98,7 @@ export type AnnouncementObject = {
 }
 
 export type AppVersionInput = {
+  app_type?: InputMaybe<Scalars['Int']['input']>
   download_url?: InputMaybe<Scalars['String']['input']>
   is_force?: InputMaybe<Scalars['Boolean']['input']>
   release_notes?: InputMaybe<Scalars['String']['input']>
@@ -107,6 +108,7 @@ export type AppVersionInput = {
 }
 
 export type AppVersionObject = {
+  app_type: Scalars['Int']['output']
   download_url: Scalars['String']['output']
   file_md_5: Scalars['String']['output']
   file_size: Scalars['Int']['output']
@@ -195,6 +197,16 @@ export type BannerObject = {
   video_url?: Maybe<Scalars['String']['output']>
   view_type: Scalars['Int']['output']
   views_count: Scalars['Int']['output']
+}
+
+export type BatchGoodInput = {
+  age_verification_enabled: Scalars['Boolean']['input']
+  age_verification_min?: InputMaybe<Scalars['Int']['input']>
+  ids: Array<Scalars['Int']['input']>
+  is_returnable?: InputMaybe<Scalars['Boolean']['input']>
+  is_tax_exempt?: InputMaybe<Scalars['Boolean']['input']>
+  merchant_id?: InputMaybe<Scalars['Int']['input']>
+  tax_rate?: InputMaybe<Scalars['Float']['input']>
 }
 
 export type CategoryInput = {
@@ -381,9 +393,11 @@ export type DailySaleObject = {
   id: Scalars['Int']['output']
   machine_id: Scalars['Int']['output']
   merchant_id: Scalars['Int']['output']
+  paid_amount: Scalars['String']['output']
   paid_count: Scalars['Int']['output']
   total_amount: Scalars['String']['output']
   total_orders: Scalars['Int']['output']
+  unpaid_amount: Scalars['String']['output']
   unpaid_count: Scalars['Int']['output']
 }
 
@@ -429,10 +443,11 @@ export type DriverInput = {
   connect_type_values?: InputMaybe<Array<Scalars['Int']['input']>>
   description?: InputMaybe<Scalars['String']['input']>
   floor_type_values?: InputMaybe<Array<Scalars['Int']['input']>>
-  is_default: Scalars['Boolean']['input']
-  is_visible: Scalars['Boolean']['input']
-  max_channel_slots: Scalars['Int']['input']
-  name: Scalars['String']['input']
+  is_default?: InputMaybe<Scalars['Boolean']['input']>
+  is_visible?: InputMaybe<Scalars['Boolean']['input']>
+  max_channel_slots?: InputMaybe<Scalars['Int']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
+  sort_id?: InputMaybe<Scalars['Int']['input']>
   thumb?: InputMaybe<Scalars['String']['input']>
 }
 
@@ -445,6 +460,7 @@ export type DriverObject = {
   is_visible: Scalars['Boolean']['output']
   max_channel_slots: Scalars['Int']['output']
   name: Scalars['String']['output']
+  sort_id: Scalars['Int']['output']
   thumb: Scalars['String']['output']
 }
 
@@ -487,6 +503,12 @@ export type FilePage = {
   lastPage: Scalars['Int']['output']
   perPage: Scalars['Int']['output']
   total: Scalars['Int']['output']
+}
+
+export type FilesQueryInput = {
+  current_page?: InputMaybe<Scalars['Int']['input']>
+  extensions?: InputMaybe<Array<Scalars['String']['input']>>
+  per_page?: InputMaybe<Scalars['Int']['input']>
 }
 
 export type FloorTypeDriverInput = {
@@ -998,6 +1020,29 @@ export type ModelPage = {
 }
 
 export type Mutation = {
+  /**
+   * Updates multiple existing goods in the database.
+   *
+   * This asynchronous function updates multiple goods in the `goods` table using the provided `input`.
+   * The user must have the appropriate permissions and be the owner of the goods to perform this operation.
+   * If the update is successful, a success message is returned. If the user lacks permissions or the update fails,
+   * an error is returned.
+   *
+   * # Arguments
+   *
+   * * `ctx` - The GraphQL context containing shared data, including the application state.
+   * * `input` - The input parameters containing the updated good data.
+   *
+   * # Returns
+   *
+   * A `Result` containing a success message if the update is successful, or an error if the operation fails.
+   *
+   * # Errors
+   *
+   * Returns an error if the user does not have the required permissions, if the goods do not belong to the user's merchant,
+   * or if the update process fails.
+   */
+  batchUpdateGoods: Scalars['String']['output']
   /**
    * Binds products to a good.
    *
@@ -3993,6 +4038,10 @@ export type Mutation = {
   wechatQrcodeToken?: Maybe<Scalars['String']['output']>
 }
 
+export type MutationBatchUpdateGoodsArgs = {
+  input: BatchGoodInput
+}
+
 export type MutationBatchUpdateProductsArgs = {
   input: ProductBatchInput
   machine_id: Scalars['Int']['input']
@@ -5170,6 +5219,27 @@ export type Query = {
    */
   currencies: Array<CurrencyObject>
   /**
+   * Gets the current daily sales data for the given merchant and machine ids.
+   *
+   * This asynchronous function retrieves the current daily sales data for the given merchant and machine ids.
+   * If both the merchant id and machine id are not provided, an error message is logged and the error is returned.
+   * If the merchant id is provided but the machine id is not, the function queries the daily sales data for all machines under the given merchant.
+   * If the machine id is provided but the merchant id is not, the function queries the daily sales data for the given machine.
+   * If both the merchant id and machine id are provided, the function queries the daily sales data for the given machine under the given merchant.
+   *
+   * # Arguments
+   *
+   * * `ctx` - The GraphQL context containing shared data, including the application state.
+   * * `merchant_id` - An optional parameter to filter the daily sales data by the given merchant id.
+   * * `machine_ids` - An optional parameter to filter the daily sales data by the given machine ids.
+   *
+   * # Returns
+   *
+   * A `Result` containing the current daily sales data if the query is successful,
+   * or an error containing the description of the error if the query fails.
+   */
+  currentDailySales: Array<DailySaleObject>
+  /**
    * Get the latest daily sale.
    *
    * This asynchronous function retrieves the latest daily sale from the `daily_sales` table where
@@ -6063,6 +6133,11 @@ export type QueryCouponsArgs = {
   input: CouponsQueryInput
 }
 
+export type QueryCurrentDailySalesArgs = {
+  machine_ids?: InputMaybe<Array<Scalars['Int']['input']>>
+  merchant_id?: InputMaybe<Scalars['Int']['input']>
+}
+
 export type QueryDailySaleArgs = {
   machine_id?: InputMaybe<Scalars['Int']['input']>
   merchant_id?: InputMaybe<Scalars['Int']['input']>
@@ -6079,7 +6154,7 @@ export type QueryEmployeesArgs = {
 
 export type QueryFilesArgs = {
   group_id?: InputMaybe<Scalars['Int']['input']>
-  input: PageInput
+  input: FilesQueryInput
 }
 
 export type QueryGoodArgs = {
@@ -6524,6 +6599,24 @@ export type LogoutMutationVariables = Exact<{
 
 export type LogoutMutation = { logout: string }
 
+export type UploadFileMutationVariables = Exact<{
+  file: Scalars['Upload']['input']
+}>
+
+export type UploadFileMutation = {
+  uploadFile: {
+    id: number
+    file_url?: string | null
+    user_id: number
+    file_name?: string | null
+    file_size?: number | null
+    file_type?: string | null
+    file_extension?: string | null
+    group_id: number
+    is_referenced: boolean
+  }
+}
+
 export type CanIUseQueryVariables = Exact<{
   input: Scalars['String']['input']
 }>
@@ -6648,6 +6741,53 @@ export const LogoutDocument = {
     },
   ],
 } as unknown as DocumentNode<LogoutMutation, LogoutMutationVariables>
+export const UploadFileDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UploadFile' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'file' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'Upload' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'uploadFile' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'file' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'file' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'file_url' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'user_id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'file_name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'file_size' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'file_type' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'file_extension' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'group_id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'is_referenced' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UploadFileMutation, UploadFileMutationVariables>
 export const CanIUseDocument = {
   kind: 'Document',
   definitions: [

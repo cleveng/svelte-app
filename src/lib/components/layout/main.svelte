@@ -1,9 +1,18 @@
 <script lang="ts">
   import { cn } from '$lib/utils'
 
-  export let fixed = false
-  export let fluid = false
-  export let className = ''
+  import type { Component } from 'svelte'
+  import type { HTMLAttributes } from 'svelte/elements'
+
+  type LayoutProps = HTMLAttributes<HTMLElement> & {
+    fixed?: boolean
+    fluid?: boolean
+    className?: string
+    children?: Component | null
+  }
+
+  // https://svelte.dev/docs/svelte/$props#Type-safety
+  const { fixed = false, fluid = false, className = '', children, ...rest }: LayoutProps = $props()
 </script>
 
 <main
@@ -14,7 +23,9 @@
     !fluid && '@7xl/content:mx-auto @7xl/content:w-full @7xl/content:max-w-7xl',
     className
   )}
-  {...$$restProps}
+  {...rest}
 >
-  <slot />
+  {#if children}
+    {@render children()}
+  {/if}
 </main>

@@ -28,7 +28,7 @@
         {#if item.icon}
           <item.icon />
         {/if}
-        <span>{item.title}{checkIsActive(href, item) ? ' (Active)' : ''}</span>
+        <span>{item.title}{checkIsActive(href, item) ? '' : ''}</span>
         {#if item.badge}
           <NavBadge>{item.badge}</NavBadge>
         {/if}

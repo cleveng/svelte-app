@@ -830,6 +830,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "app_type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "download_url",
             "description": null,
             "type": {
@@ -912,6 +924,22 @@
         "description": null,
         "isOneOf": null,
         "fields": [
+          {
+            "name": "app_type",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "download_url",
             "description": null,
@@ -1991,6 +2019,118 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "BatchGoodInput",
+        "description": null,
+        "isOneOf": false,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "age_verification_enabled",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "age_verification_min",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ids",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "is_returnable",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "is_tax_exempt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "merchant_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tax_rate",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -4100,6 +4240,22 @@
             "deprecationReason": null
           },
           {
+            "name": "paid_amount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_count",
             "description": null,
             "args": [],
@@ -4141,6 +4297,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpaid_amount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -4671,13 +4843,9 @@
             "name": "is_default",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -4687,13 +4855,9 @@
             "name": "is_visible",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -4703,13 +4867,9 @@
             "name": "max_channel_slots",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -4719,13 +4879,21 @@
             "name": "name",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "sort_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -4892,6 +5060,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "sort_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -5401,6 +5585,62 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "FilesQueryInput",
+        "description": null,
+        "isOneOf": false,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "current_page",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "extensions",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "per_page",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -11428,6 +11668,39 @@
         "description": null,
         "isOneOf": null,
         "fields": [
+          {
+            "name": "batchUpdateGoods",
+            "description": "Updates multiple existing goods in the database.\n\nThis asynchronous function updates multiple goods in the `goods` table using the provided `input`.\nThe user must have the appropriate permissions and be the owner of the goods to perform this operation.\nIf the update is successful, a success message is returned. If the user lacks permissions or the update fails,\nan error is returned.\n\n# Arguments\n\n* `ctx` - The GraphQL context containing shared data, including the application state.\n* `input` - The input parameters containing the updated good data.\n\n# Returns\n\nA `Result` containing a success message if the update is successful, or an error if the operation fails.\n\n# Errors\n\nReturns an error if the user does not have the required permissions, if the goods do not belong to the user's merchant,\nor if the update process fails.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BatchGoodInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "batchUpdateProducts",
             "description": "Binds products to a good.\n\nThis asynchronous function updates the `good_id` of the products in the `products` table\nwith the given `good_id` for the products with the given `ids` in the machine with the\ngiven `machine_id`. The function checks whether the current user has the necessary permissions\nand whether the machine belongs to the user's merchant. If the user lacks permissions, the\nmachine does not belong to the merchant, or the update of the product inventory fails, an\nerror is returned.\n\n# Arguments\n\n* `ctx` - The GraphQL context containing shared data, including the application state.\n* `machine_id` - The id of the machine in which to bind the products.\n* `ids` - The ids of the products to bind.\n* `good_id` - The id of the good to bind the products to.\n\n# Returns\n\nA `Result` containing `\"ok\"` if the query is successful, or an error containing\nthe description of the error if the query fails or the user lacks necessary permissions.",
@@ -20489,6 +20762,63 @@
             "deprecationReason": null
           },
           {
+            "name": "currentDailySales",
+            "description": "Gets the current daily sales data for the given merchant and machine ids.\n\nThis asynchronous function retrieves the current daily sales data for the given merchant and machine ids.\nIf both the merchant id and machine id are not provided, an error message is logged and the error is returned.\nIf the merchant id is provided but the machine id is not, the function queries the daily sales data for all machines under the given merchant.\nIf the machine id is provided but the merchant id is not, the function queries the daily sales data for the given machine.\nIf both the merchant id and machine id are provided, the function queries the daily sales data for the given machine under the given merchant.\n\n# Arguments\n\n* `ctx` - The GraphQL context containing shared data, including the application state.\n* `merchant_id` - An optional parameter to filter the daily sales data by the given merchant id.\n* `machine_ids` - An optional parameter to filter the daily sales data by the given machine ids.\n\n# Returns\n\nA `Result` containing the current daily sales data if the query is successful,\nor an error containing the description of the error if the query fails.",
+            "args": [
+              {
+                "name": "machine_ids",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Int",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "merchant_id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "DailySaleObject",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "dailySale",
             "description": "Get the latest daily sale.\n\nThis asynchronous function retrieves the latest daily sale from the `daily_sales` table where\n`merchant_id` is equal to the given `merchant_id` and `machine_id` is equal to the given\n`machine_id`. If the query fails, an error message is logged and the error is returned.\n\n# Arguments\n\n* `ctx` - The GraphQL context containing shared data, including the application state.\n* `merchant_id` - An optional parameter to filter the daily sales by the given merchant id.\n* `machine_id` - An optional parameter to filter the daily sales by the given machine id.\n\n# Returns\n\nA `Result` containing the latest daily sale if the query is successful,\nor an error containing the description of the error if the query fails.",
             "args": [
@@ -20659,7 +20989,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "PageInput",
+                    "name": "FilesQueryInput",
                     "ofType": null
                   }
                 },

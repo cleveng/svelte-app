@@ -12,7 +12,7 @@ export declare namespace API {
 
   type Theme = 'light' | 'dark' | 'system'
   type Direction = 'ltr' | 'rtl'
-  type Collapsible = 'offcanvas' | 'icon' | 'none' | 'default'
+  type Collapsible = 'offcanvas' | 'icon' | 'none' | undefined
   type Variant = 'inset' | 'sidebar' | 'floating'
   type Locale = 'en-US' | 'zh-CN'
 

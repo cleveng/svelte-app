@@ -53,7 +53,11 @@
 
     <DropdownMenuGroup>
       <DropdownMenuItem>
-        <a href={resolve('/')} class="flex w-full items-center justify-between" data-sveltekit-preload-data="hover">
+        <a
+          href={resolve('/dashboard/profile')}
+          class="flex w-full items-center justify-between"
+          data-sveltekit-preload-data="hover"
+        >
           Profile
           <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
         </a>
