@@ -8,7 +8,7 @@
 </script>
 
 <main class="flex h-screen w-full items-center justify-center px-4">
-  <form class="flex w-full max-w-96 flex-col">
+  <form class="flex w-80 flex-col md:w-full md:max-w-96">
     <a href={resolve('/')} class="mb-8" title="Go to PrebuiltUI">
       <svg class="size-10" width="30" height="33" viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
