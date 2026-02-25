@@ -3,60 +3,25 @@
   import ArrowUpAZ from '@lucide/svelte/icons/arrow-up-a-z'
   import Eye from '@lucide/svelte/icons/eye'
   import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal'
-  import Upload from '@lucide/svelte/icons/upload'
-  import { toast } from 'svelte-sonner'
-  import { superForm, fileProxy } from 'sveltekit-superforms'
-  import { zod4Client } from 'sveltekit-superforms/adapters'
 
   import { Main } from '$lib/components/layout'
+  import { MediumUpload } from '$lib/components/medium-upload'
   import { Button } from '$lib/components/ui/button/index.js'
   import { Input } from '$lib/components/ui/input/index.js'
   import { Select, SelectContent, SelectItem, SelectTrigger } from '$lib/components/ui/select'
   import { Separator } from '$lib/components/ui/separator'
 
-  import { formSchema } from './schema'
-
   import type { PageData } from './$types'
 
   const props = $props<{ data: PageData }>()
-  let loading = $state<boolean>(false)
-
-  const form = superForm(props.data.form, {
-    validators: zod4Client(formSchema),
-    onSubmit: () => {
-      loading = true
-    },
-    onResult: async ({ result }) => {
-      loading = false
-
-      // ✅ 登录失败（fail(...)）
-      if (result.type === 'failure') {
-        toast.error(result.data?.error ?? '上传失败，请重试', {
-          id: __TOAST_ID__,
-        })
-      }
-
-      // ✅ 登录成功（redirect 会发生）
-      if (result.type === 'success' && result.data?.success) {
-        toast.success('上传成功', {
-          id: __TOAST_ID__,
-        })
-      }
-    },
-  })
-
-  const { form: params, enhance } = form
-  const files = fileProxy(params, 'file')
 
   let search = $state<string>('All Apps')
 
-  let fileInput: HTMLInputElement | null = null
-  const open = () => {
-    fileInput?.click()
-  }
+  const thumb = $state<string>()
+  const media = $state<string[]>([])
 </script>
 
-<Main fixed>
+<Main>
   <div {...props} class="space-y-0.5">
     <h1 class="text-2xl font-bold tracking-tight md:text-3xl">附件管理</h1>
     <p class="text-muted-foreground">Manage your account settings and set e-mail preferences.</p>
@@ -128,37 +93,8 @@
     </li>
   </ul>
 
-  <form method="POST" enctype="multipart/form-data" use:enhance>
-    <div class="mb-3">
-      <label for="file-input">选择文件:</label>
-      <Input
-        bind:ref={fileInput}
-        disabled={loading}
-        id="file-input"
-        name="file"
-        type="file"
-        accept="*"
-        bind:files={$files}
-        class="hidden"
-        required
-      />
-      <button
-        tabindex={0}
-        onclick={open}
-        class="mt-1.5 flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-border p-8 text-center"
-      >
-        <div class="mb-2 rounded-full bg-muted p-3">
-          <Upload size={32} />
-        </div>
-        <p class="text-sm font-medium text-foreground">Upload a project image</p>
-        <p class="mt-1 text-sm text-muted-foreground">or, click to browse (4MB max)</p>
-      </button>
-    </div>
-
-    {#if $files.length > 0}
-      <p>已选择文件: {$files[0].name}</p>
-    {/if}
-
-    <Button type="submit">上传</Button>
-  </form>
+  <div class="mb-30">
+    <label for="file-input">选择文件:</label>
+    <MediumUpload {media} {thumb} maxCount={5} />
+  </div>
 </Main>
