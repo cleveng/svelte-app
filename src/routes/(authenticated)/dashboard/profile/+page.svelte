@@ -23,7 +23,7 @@
     validators: zod4(formSchema),
   })
 
-  const { form: params, enhance } = form
+  const { form: _params, enhance } = form
 </script>
 
 <ContentSection title="Profile" description="This is how others will see you on the site.">

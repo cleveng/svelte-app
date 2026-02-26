@@ -4,6 +4,7 @@
   import { page } from '$app/state'
 
   import favicon from '$lib/assets/favicon.svg'
+
   import '$lib/i18n'
   import { appStore } from '$lib/stores/app.store'
 
