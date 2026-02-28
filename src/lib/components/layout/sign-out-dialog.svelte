@@ -2,6 +2,9 @@
   import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
 
+  import { goto } from '$app/navigation'
+  import { resolve } from '$app/paths'
+
   import {
     AlertDialog,
     AlertDialogCancel,
@@ -13,16 +16,35 @@
   } from '$lib/components/ui/alert-dialog'
   import { Button } from '$lib/components/ui/button'
 
-  let loading = $state<boolean>(false)
-  let disabled = $state<boolean>(false)
+  import graffle from '$lib/graphql-client'
+  import { appStore } from '$lib/stores/app.store'
+
+  import { LogoutDocument } from '@/generated/graphql'
 
   let { open, onOpenChange } = $props()
 
-  const handleConfirm = () => {
-    toast.success('退出成功，正在跳转...', {
-      id: __TOAST_ID__,
-      duration: 2500,
-    })
+  let loading = $state<boolean>(false)
+  const handleConfirm = async () => {
+    if (loading) return
+    loading = true
+
+    try {
+      await graffle.gql(LogoutDocument).$send({ input: '' })
+      appStore.update(state => ({
+        ...state,
+        loggedIn: false,
+        token: null,
+      }))
+      toast.success('退出成功，正在跳转...', {
+        id: __TOAST_ID__,
+        duration: 2500,
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      loading = false
+      goto(resolve('/'))
+    }
   }
 </script>
 
@@ -41,20 +63,18 @@
       <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">
         {$_('button.cancel')}
       </AlertDialogCancel>
-      <form method="POST" action="/logout">
-        <Button
-          onclick={handleConfirm}
-          disabled={disabled || loading}
-          variant="destructive"
-          type="submit"
-          class="w-full md:inline-block md:w-auto"
-        >
-          {#if loading}
-            <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
-          {/if}
-          {$_('button.confirm')}
-        </Button>
-      </form>
+      <Button
+        onclick={handleConfirm}
+        disabled={loading}
+        variant="destructive"
+        type="submit"
+        class="w-full md:inline-block md:w-auto"
+      >
+        {#if loading}
+          <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
+        {/if}
+        {$_('button.confirm')}
+      </Button>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
