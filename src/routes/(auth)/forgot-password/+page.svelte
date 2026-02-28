@@ -5,6 +5,8 @@
   import * as Field from '$lib/components/ui/field/index.js'
   import { Input } from '$lib/components/ui/input/index.js'
   import { Spinner } from '$lib/components/ui/spinner/index.js'
+
+  let loading = $state<boolean>(false)
 </script>
 
 <main class="flex h-screen w-full items-center justify-center px-4">
@@ -43,7 +45,10 @@
             class="h-11 w-full bg-indigo-500 text-white transition-opacity hover:bg-indigo-500 hover:opacity-90"
             size="lg"
           >
-            <Spinner />登 录
+            {#if loading}
+              <Spinner />
+            {/if}
+            提 交
           </Button>
         </Field.Field>
       </Field.Group>
