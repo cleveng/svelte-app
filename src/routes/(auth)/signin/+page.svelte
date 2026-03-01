@@ -2,6 +2,7 @@
   import Eye from '@lucide/svelte/icons/eye'
   import Lock from '@lucide/svelte/icons/lock'
   import MailIcon from '@lucide/svelte/icons/mail'
+  import { mutationStore, getContextClient } from '@urql/svelte'
   import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
   import { superForm } from 'sveltekit-superforms'
@@ -20,37 +21,82 @@
   import GoogleLogo from '$lib/assets/images/google.svg'
   import leftSideImage from '$lib/assets/images/leftSideImage.png'
 
+  import { signer } from '$lib/config'
+  import { appStore } from '$lib/stores/app.store'
+
   import { formSchema } from './schema'
 
-  import type { PageData } from './$types'
+  import { SigninDocument } from '@/generated/graphql'
 
-  const props = $props<{ data: PageData }>()
   let loading = $state<boolean>(false)
 
-  const form = superForm(props.data.form, {
-    validators: zod4(formSchema),
-    onSubmit: () => {
-      loading = true
-    },
-    onResult: async ({ result }) => {
-      loading = false
+  const client = getContextClient()
+  const mutation = ({ input }: { input: string }) =>
+    mutationStore({
+      client,
+      query: SigninDocument,
+      variables: { input },
+    })
 
-      // ✅ 登录失败（fail(...)）
-      if (result.type === 'failure') {
-        toast.error(result.data?.error ?? '登录失败，请检查表单', {
-          id: __TOAST_ID__,
-        })
-      }
-
-      // ✅ 登录成功（redirect 会发生）
-      if (result.type === 'success' && result.data?.success) {
-        toast.success('登录成功，正在跳转...', {
-          id: __TOAST_ID__,
-        })
-        await goto(resolve(result?.data?.redirectTo), { replaceState: true })
-      }
+  const form = superForm(
+    {
+      email: '',
+      password: '',
+      remember_me: false,
     },
-  })
+    {
+      validators: zod4(formSchema),
+      SPA: true, // 单页面应用
+      resetForm: false,
+      onUpdate: async ({ form }) => {
+        loading = true
+
+        const isOk = formSchema.safeParse(form.data)
+        if (!isOk.success) {
+          toast.error('登录失败，请检查表单', {
+            id: __TOAST_ID__,
+          })
+          return
+        }
+
+        const input = signer.toBase64String({
+          email: form.data.email,
+          password: form.data.password,
+        })
+
+        try {
+          mutation({ input }).subscribe(res => {
+            if (!res.data) {
+              const message =
+                res.error?.graphQLErrors[0]?.message || res.error?.networkError?.message || '登录失败，请检查账号密码'
+              toast.error(message, {
+                id: __TOAST_ID__,
+              })
+              return
+            }
+
+            if (res.data?.signin) {
+              appStore.update(state => ({
+                ...state,
+                loggedIn: true,
+                token: res.data?.signin as string,
+              }))
+
+              toast.success('登录成功，正在跳转...', {
+                id: __TOAST_ID__,
+              })
+
+              goto(resolve('/dashboard'))
+            }
+          })
+        } catch (error) {
+          console.log(error)
+        } finally {
+          loading = false
+        }
+      },
+    }
+  )
 
   const { form: params, enhance } = form
 </script>
