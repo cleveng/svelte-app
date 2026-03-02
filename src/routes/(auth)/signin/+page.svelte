@@ -1,3 +1,4 @@
+<!-- +page.svelte -->
 <script lang="ts">
   import Eye from '@lucide/svelte/icons/eye'
   import Lock from '@lucide/svelte/icons/lock'
@@ -28,8 +29,6 @@
 
   import { SigninDocument } from '@/generated/graphql'
 
-  let loading = $state<boolean>(false)
-
   const client = getContextClient()
   const mutation = ({ input }: { input: string }) =>
     mutationStore({
@@ -38,6 +37,7 @@
       variables: { input },
     })
 
+  let loading = $state<boolean>(false)
   const form = superForm(
     {
       email: '',
@@ -48,10 +48,10 @@
       validators: zod4(formSchema),
       SPA: true, // 单页面应用
       resetForm: false,
-      onUpdate: async ({ form }) => {
+      onUpdate: async ({ form: request }) => {
         loading = true
 
-        const isOk = formSchema.safeParse(form.data)
+        const isOk = formSchema.safeParse(request.data)
         if (!isOk.success) {
           toast.error('登录失败，请检查表单', {
             id: __TOAST_ID__,
@@ -60,8 +60,8 @@
         }
 
         const input = signer.toBase64String({
-          email: form.data.email,
-          password: form.data.password,
+          email: request.data.email,
+          password: request.data.password,
         })
 
         try {
@@ -72,6 +72,9 @@
               toast.error(message, {
                 id: __TOAST_ID__,
               })
+
+              // 重置表单
+              form.reset()
               return
             }
 
