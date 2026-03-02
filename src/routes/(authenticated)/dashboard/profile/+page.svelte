@@ -21,6 +21,11 @@
 
   const form = superForm(props.data.form, {
     validators: zod4(formSchema),
+    SPA: true,
+    resetForm: false,
+    onUpdate: ({ form: request }) => {
+      console.log(request.data)
+    },
   })
 
   const { form: _params, enhance } = form

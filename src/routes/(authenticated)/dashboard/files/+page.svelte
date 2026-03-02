@@ -4,6 +4,7 @@
   import Eye from '@lucide/svelte/icons/eye'
   import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal'
   import Upload from '@lucide/svelte/icons/upload'
+  import { mutationStore, getContextClient } from '@urql/svelte'
   import { toast } from 'svelte-sonner'
   import { superForm, fileProxy } from 'sveltekit-superforms'
   import { zod4Client } from 'sveltekit-superforms/adapters'
@@ -18,7 +19,17 @@
 
   import type { PageData } from './$types'
 
+  import { UploadFileDocument } from '@/generated/graphql'
+
   const props = $props<{ data: PageData }>()
+
+  const client = getContextClient()
+  const mutation = ({ file }: { file: File }) =>
+    mutationStore({
+      client,
+      query: UploadFileDocument,
+      variables: { file },
+    })
 
   let search = $state<string>('All Apps')
 
@@ -35,35 +46,50 @@
   let loading = $state<boolean>(false)
   const form = superForm<FormSchema>(
     {
-      file: undefined,
+      file: undefined as File | undefined,
     },
     {
       validators: zod4Client(formSchema),
-      onSubmit: () => {
+      SPA: true,
+      resetForm: false,
+      onUpdate: async ({ form: request }) => {
         loading = true
-      },
-      onResult: async ({ result }) => {
-        loading = false
 
-        // ✅ 登录失败（fail(...)）
-        if (result.type === 'failure') {
-          toast.error(result.data?.error ?? '上传失败，请重试', {
+        const isOk = formSchema.safeParse(request.data)
+        if (!isOk.success) {
+          toast.error('登录失败，请检查表单', {
             id: __TOAST_ID__,
           })
+          return
         }
 
-        // ✅ 登录成功（redirect 会发生）
-        if (result.type === 'success' && result.data?.success) {
-          toast.success('上传成功', {
-            id: __TOAST_ID__,
+        const file = request.data.file as File
+
+        try {
+          mutation({ file }).subscribe(res => {
+            if (!res.data) {
+              toast.error('上传失败，请重试', {
+                id: __TOAST_ID__,
+              })
+
+              form.reset()
+              return
+            }
+
+            toast.success('上传成功', {
+              id: __TOAST_ID__,
+            })
+            console.log(res.data?.uploadFile)
           })
+        } catch (error) {
+          console.error(error)
         }
       },
     }
   )
 
   const { form: params, enhance } = form
-  const files = fileProxy(params, 'file') // Argument of type '"file"' is not assignable to parameter of type 'never'
+  const files = fileProxy(params, 'file')
 
   // 图片上传组件
   let fileInput = $state<HTMLInputElement | null>(null)

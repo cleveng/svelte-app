@@ -14,7 +14,7 @@ const client = new Client({
       headers: {
         Appid: __APPID__,
         AppVersion: __VERSION__,
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json', // 上传附件，不能写死
         'X-Sent-At-Time': Date.now().toString(),
         Authorization: token ? `Bearer ${token}` : '',
       },
