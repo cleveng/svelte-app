@@ -76,7 +76,7 @@ jobs:
         with:
           flags: '-avzr'
           options: ''
-          src: 'package.json pnpm-lock.yaml dist'
+          src: './dist/'
           dest: 'root@${{ secrets.SSH_HOST }}:${{ steps.release-dir-path.outputs.dir }}'
 
       - name: Install dependencies and run on server
