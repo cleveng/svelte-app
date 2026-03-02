@@ -1,6 +1,10 @@
 <script lang="ts">
+  import { mutationStore, getContextClient } from '@urql/svelte'
   import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
+
+  import { goto } from '$app/navigation'
+  import { resolve } from '$app/paths'
 
   import {
     AlertDialog,
@@ -13,16 +17,51 @@
   } from '$lib/components/ui/alert-dialog'
   import { Button } from '$lib/components/ui/button'
 
-  let loading = $state<boolean>(false)
-  let disabled = $state<boolean>(false)
+  import { appStore } from '$lib/stores/app.store'
+
+  import { LogoutDocument } from '@/generated/graphql'
 
   let { open, onOpenChange } = $props()
 
-  const handleConfirm = () => {
-    toast.success('退出成功，正在跳转...', {
-      id: __TOAST_ID__,
-      duration: 2500,
+  const client = getContextClient()
+  const mutation = ({ input }: { input: string }) =>
+    mutationStore({
+      client,
+      query: LogoutDocument,
+      variables: { input },
     })
+
+  let loading = $state<boolean>(false)
+  const handleConfirm = async () => {
+    if (loading) return
+    loading = true
+
+    try {
+      mutation({ input: '' }).subscribe(res => {
+        if (!res.data) {
+          const message = res.error?.graphQLErrors[0]?.message || res.error?.networkError?.message || '操作失败，请重试'
+          toast.error(message, {
+            id: __TOAST_ID__,
+          })
+          return
+        }
+
+        appStore.update(state => ({
+          ...state,
+          loggedIn: false,
+          token: null,
+        }))
+        toast.success('退出成功，正在跳转...', {
+          id: __TOAST_ID__,
+          duration: 2500,
+        })
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      loading = false
+      goto(resolve('/'))
+    }
   }
 </script>
 
@@ -41,20 +80,18 @@
       <AlertDialogCancel disabled={loading} onclick={() => onOpenChange(false)} type="button">
         {$_('button.cancel')}
       </AlertDialogCancel>
-      <form method="POST" action="/logout">
-        <Button
-          onclick={handleConfirm}
-          disabled={disabled || loading}
-          variant="destructive"
-          type="submit"
-          class="w-full md:inline-block md:w-auto"
-        >
-          {#if loading}
-            <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
-          {/if}
-          {$_('button.confirm')}
-        </Button>
-      </form>
+      <Button
+        onclick={handleConfirm}
+        disabled={loading}
+        variant="destructive"
+        type="submit"
+        class="w-full md:inline-block md:w-auto"
+      >
+        {#if loading}
+          <span class="mr-2 h-4 w-4 animate-spin">⏳</span>
+        {/if}
+        {$_('button.confirm')}
+      </Button>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>

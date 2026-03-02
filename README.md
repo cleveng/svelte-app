@@ -59,7 +59,7 @@ TimeoutStopSec=5
 WantedBy=multi-user.target
 ```
 
-## [graffle.js](https://graffle.js.org/guides/getting-started)
+## [@urql/svelte](https://nearform.com/open-source/urql/docs/basics/svelte/)
 
 ## 登录逻辑说明
 

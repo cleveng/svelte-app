@@ -1,24 +1,17 @@
 <script lang="ts">
+  import { setContextClient } from '@urql/svelte'
   import { Toaster } from 'svelte-sonner'
-
-  import { page } from '$app/state'
 
   import favicon from '$lib/assets/favicon.svg'
 
   import '$lib/i18n'
-  import { appStore } from '$lib/stores/app.store'
+  import client from '$lib/urql-client'
 
   import './layout.css'
 
   let { children } = $props()
 
-  if (!page.data?.token) {
-    appStore.update(state => ({
-      ...state,
-      loggedIn: false,
-      token: null,
-    }))
-  }
+  setContextClient(client)
 </script>
 
 <svelte:head>

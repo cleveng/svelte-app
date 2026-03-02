@@ -1,3 +1,4 @@
+// app.store.ts
 import * as devalue from 'devalue'
 import { persisted } from 'svelte-persisted-store'
 
@@ -19,7 +20,7 @@ export interface AppState {
 const initialState: AppState = {
   theme: browser ? (sessionStorage.theme as AppState['theme']) || 'system' : 'system',
   dir: browser ? (sessionStorage.dir as AppState['dir']) || 'ltr' : 'ltr',
-  collapsible: browser ? (sessionStorage.collapsible as AppState['collapsible']) || 'icon' : 'icon',
+  collapsible: browser ? (sessionStorage.collapsible as AppState['collapsible']) || 'icon' : 'icon', //
   sidebar: browser ? (sessionStorage.collapsible as AppState['sidebar']) || 'inset' : 'inset',
   loggedIn: false,
   token: null,
@@ -27,7 +28,7 @@ const initialState: AppState = {
   locale: 'en-US',
 }
 
-export const appStore = persisted('session-storage', initialState, {
+export const appStore = persisted('app-state', initialState, {
   serializer: devalue,
   storage: 'session',
 })

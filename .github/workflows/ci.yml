@@ -57,6 +57,12 @@ jobs:
         env:
           NODE_OPTIONS: '--max-old-space-size=8192'
 
+      - name: Get release dir path
+        id: release-dir-path
+        run: |
+          dir=${{ secrets.ROOT_DIR }}/releases/$(TZ=Asia/Shanghai date +%Y%m%d_%H%M%S)
+          echo "dir=$dir" >> $GITHUB_OUTPUT
+
       - name: Generate SHA256 for dist
         run: |
           tar -czf dist.tar.gz -C dist .
@@ -71,7 +77,7 @@ jobs:
           flags: '-avzr'
           options: ''
           src: 'package.json pnpm-lock.yaml dist'
-          dest: 'root@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_DIR }}/current'
+          dest: 'root@${{ secrets.SSH_HOST }}:${{ steps.release-dir-path.outputs.dir }}'
 
       - name: Install dependencies and run on server
         uses: appleboy/ssh-action@master

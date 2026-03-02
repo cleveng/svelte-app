@@ -18,9 +18,16 @@ export default defineConfig(({ mode }) => {
       __TOAST_ID__: JSON.stringify('global-toast'),
     },
     plugins: [tailwindcss(), enhancedImages(), sveltekit()],
+    build: {
+      sourcemap: true,
+    },
     esbuild: {
       // 生产环境下禁用console和debugger
       drop: mode === 'production' ? ['console', 'debugger'] : [],
+    },
+    optimizeDeps: {
+      // [Function called outside component initialization](https://nearform.com/open-source/urql/docs/basics/svelte/)
+      exclude: ['@urql/svelte', '@urql/core'],
     },
   }
 })
