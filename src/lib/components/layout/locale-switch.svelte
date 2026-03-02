@@ -1,7 +1,6 @@
 <script lang="ts">
   import Check from '@lucide/svelte/icons/check'
   import Language from '@lucide/svelte/icons/languages'
-  import { onMount } from 'svelte'
   import { locale } from 'svelte-i18n'
 
   import { Button } from '$lib/components/ui/button'
@@ -16,14 +15,7 @@
   import type { API } from '$lib/types/api'
   import { cn } from '$lib/utils'
 
-  // 保证客户端使用的语言是 sessionStorage 所选取的语言
-  let lng = $derived($appStore.locale)
-  onMount(() => {
-    if (lng) {
-      locale.set(lng)
-    }
-  })
-
+  const lng = $derived($appStore.locale)
   const locales: API.Locale[] = ['zh-CN', 'en-US']
 
   let setLocale = (value: API.Locale) => {

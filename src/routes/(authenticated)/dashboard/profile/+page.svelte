@@ -15,18 +15,22 @@
   import { ContentSection } from './components'
   import { formSchema } from './schema'
 
-  import type { PageData } from './$types'
-
-  const props = $props<{ data: PageData }>()
-
-  const form = superForm(props.data.form, {
-    validators: zod4(formSchema),
-    SPA: true,
-    resetForm: false,
-    onUpdate: ({ form: request }) => {
-      console.log(request.data)
+  const form = superForm(
+    {
+      username: '',
+      email: '',
+      password: '',
+      remember_me: false,
     },
-  })
+    {
+      validators: zod4(formSchema),
+      SPA: true,
+      resetForm: false,
+      onUpdate: ({ form: request }) => {
+        console.log(request.data)
+      },
+    }
+  )
 
   const { form: _params, enhance } = form
 </script>
@@ -46,7 +50,7 @@
       </Form.Description>
       <Form.FieldErrors />
     </Form.Field>
-    <Form.Field {form} name="username">
+    <Form.Field {form} name="email">
       <Form.Control>
         {#snippet children({ props })}
           <Form.Label>Email</Form.Label>

@@ -1,6 +1,8 @@
 // src/routes/dashboard/+layout.ts
-import { redirect } from '@sveltejs/kit'
 import { get } from 'svelte/store'
+
+import { goto } from '$app/navigation'
+import { resolve } from '$app/paths'
 
 import { appStore } from '$lib/stores/app.store'
 import type { API } from '$lib/types'
@@ -13,7 +15,7 @@ export const load = async () => {
   try {
     // 1. 检查token有效性
     const res = await client.query(AuthDocument, {})
-    if (!res.data) {
+    if (!res.data?.auth) {
       console.error('token 无效，正在清除 cookie')
       appStore.update(state => ({
         ...state,
@@ -21,7 +23,8 @@ export const load = async () => {
         token: null,
       }))
 
-      throw redirect(302, '/signin')
+      goto(resolve('/signin'))
+      return
     }
 
     // 2. 获取用户信息

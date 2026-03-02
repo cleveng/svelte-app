@@ -3,7 +3,6 @@
   import Eye from '@lucide/svelte/icons/eye'
   import Lock from '@lucide/svelte/icons/lock'
   import MailIcon from '@lucide/svelte/icons/mail'
-  import { mutationStore, getContextClient } from '@urql/svelte'
   import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
   import { superForm } from 'sveltekit-superforms'
@@ -24,18 +23,11 @@
 
   import { signer } from '$lib/config'
   import { appStore } from '$lib/stores/app.store'
+  import client from '$lib/urql-client'
 
   import { formSchema } from './schema'
 
   import { SigninDocument } from '@/generated/graphql'
-
-  const client = getContextClient()
-  const mutation = ({ input }: { input: string }) =>
-    mutationStore({
-      client,
-      query: SigninDocument,
-      variables: { input },
-    })
 
   let loading = $state<boolean>(false)
   const form = superForm(
@@ -65,33 +57,25 @@
         })
 
         try {
-          mutation({ input }).subscribe(res => {
-            if (!res.data) {
-              const message =
-                res.error?.graphQLErrors[0]?.message || res.error?.networkError?.message || '登录失败，请检查账号密码'
-              toast.error(message, {
-                id: __TOAST_ID__,
-              })
+          const res = await client.mutation(SigninDocument, { input })
+          if (res.data?.signin) {
+            appStore.update(state => ({
+              ...state,
+              loggedIn: true,
+              token: res.data?.signin as string,
+            }))
 
-              // 重置表单
-              form.reset()
-              return
-            }
+            toast.success('登录成功，正在跳转...', {
+              id: __TOAST_ID__,
+            })
 
-            if (res.data?.signin) {
-              appStore.update(state => ({
-                ...state,
-                loggedIn: true,
-                token: res.data?.signin as string,
-              }))
-
-              toast.success('登录成功，正在跳转...', {
-                id: __TOAST_ID__,
-              })
-
-              goto(resolve('/dashboard'))
-            }
-          })
+            goto(resolve('/dashboard'))
+          } else {
+            toast.error('登录失败，请检查账号密码', {
+              id: __TOAST_ID__,
+            })
+            form.reset()
+          }
         } catch (error) {
           console.log(error)
         } finally {

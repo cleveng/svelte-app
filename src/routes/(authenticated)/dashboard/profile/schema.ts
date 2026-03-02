@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 // 定义登录表单的校验规则
 export const formSchema = z.object({
+  username: z.string().min(3, '用户名长度不能少于3位').max(20, '用户名长度不能超过20位'),
   email: z.email({
     error: iss => (iss.input === '' ? '请输入邮箱地址' : undefined),
   }),

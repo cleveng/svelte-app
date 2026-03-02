@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { mutationStore, getContextClient } from '@urql/svelte'
   import { _ } from 'svelte-i18n'
   import { toast } from 'svelte-sonner'
 
@@ -18,18 +17,11 @@
   import { Button } from '$lib/components/ui/button'
 
   import { appStore } from '$lib/stores/app.store'
+  import client from '$lib/urql-client'
 
   import { LogoutDocument } from '@/generated/graphql'
 
   let { open, onOpenChange } = $props()
-
-  const client = getContextClient()
-  const mutation = ({ input }: { input: string }) =>
-    mutationStore({
-      client,
-      query: LogoutDocument,
-      variables: { input },
-    })
 
   let loading = $state<boolean>(false)
   const handleConfirm = async () => {
@@ -37,30 +29,29 @@
     loading = true
 
     try {
-      mutation({ input: '' }).subscribe(res => {
-        if (!res.data) {
-          const message = res.error?.graphQLErrors[0]?.message || res.error?.networkError?.message || '操作失败，请重试'
-          toast.error(message, {
-            id: __TOAST_ID__,
-          })
-          return
-        }
-
+      const res = await client.mutation(LogoutDocument, { input: '' })
+      if (res.data?.logout) {
         appStore.update(state => ({
           ...state,
           loggedIn: false,
           token: null,
+          profile: null,
         }))
         toast.success('退出成功，正在跳转...', {
           id: __TOAST_ID__,
           duration: 2500,
         })
-      })
+        goto(resolve('/'))
+      } else {
+        const message = res.error?.graphQLErrors[0]?.message || res.error?.networkError?.message || '操作失败，请重试'
+        toast.error(message, {
+          id: __TOAST_ID__,
+        })
+      }
     } catch (err) {
       console.log(err)
     } finally {
       loading = false
-      goto(resolve('/'))
     }
   }
 </script>

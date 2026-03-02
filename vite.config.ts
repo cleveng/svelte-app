@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [tailwindcss(), enhancedImages(), sveltekit()],
     build: {
-      sourcemap: true,
+      sourcemap: false,
     },
     esbuild: {
       // 生产环境下禁用console和debugger
