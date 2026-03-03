@@ -19,8 +19,13 @@
 
 ## [@urql/svelte](https://nearform.com/open-source/urql/docs/basics/svelte/)
 
-## 登录逻辑说明
+## Tauri 配置
 
-1. 登录使用action在服务端进行，并存储cookies（用于服务端查询数据）
-2. 登录后跳转到/dashboard，存储数据到sessionStorage，页面请求时使用这个数据
-3. 退出后全局判断是否还存活
+```bash
+# Tauri
+export JEAN_FORCE_X11=0
+
+# Error 71 (Protocol error) dispatching to Wayland display.
+export WEBKIT_DISABLE_DMABUF_RENDERER=1
+export WEBKIT_DISABLE_COMPOSITING_MODE=1
+```
